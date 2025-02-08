@@ -5,28 +5,27 @@ const SceneMain = class {
         this.#game();
     }
     #game() {
-        const imgContainer = new Ielement(container, {
-            css: {
-                width: "100%",
-                height: "100%",
-                display: "grid",
-                gridTemplateColumns: "repeat(3, auto)" /* 3列 */,
-                gridTemplateRows: "repeat(1, auto)" /* 1行 */,
-                gap: "8%",
-                padding: "20%",
-            },
-        });
         const { value, done } = questionsIterator.next();
         if (done) {
             currentScene = new SceneTitle();
             return;
         }
         const [text, images, answer] = value;
+        const imgContainer = new Ielement(container, {
+            css: {
+                width: "100%",
+                height: "100%",
+                display: "grid",
+                gridTemplateColumns: `repeat(${images.length}, auto)` /* n列 */,
+                gridTemplateRows: "repeat(1, auto)" /* 1行 */,
+                // gap: "8%",
+                // padding: "20%",
+            },
+        });
         images.forEach((image, j) => {
             const img = new Iimage(imgContainer, `../assets/images/${image}.png`, {
                 css: {
-                    width: "100%",
-                    height: "100%",
+                    height: "30%",
                     cursor: "pointer",
                     ":hover": {
                         opacity: "0.5",
@@ -76,7 +75,7 @@ const SceneMain = class {
     }
 };
 const questions = function* () {
-    yield ["ドーナツと同相なのはどれ?", ["mug", "p-bottle", ""], 0];
+    yield ["ドーナツと同相なのはどれ?", ["mug", "p-bottle"], 0];
     // return ["", ["", "", ""], 0]
 };
 const questionsIterator = questions();
