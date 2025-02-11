@@ -7,12 +7,18 @@ const sleep = (ms) => new Promise((resolve) => {
 });
 // クリック待ち
 const waitOK = () => new Promise((resolve) => {
-    document.addEventListener("click", resolve, { once: true });
-    document.addEventListener("keydown", (e) => {
+    const onClick = () => {
+        resolve(undefined);
+        document.removeEventListener("keydown", onKeyDown);
+    };
+    const onKeyDown = (e) => {
         if (["Enter", "KeyZ", "Space"].includes(e.code)) {
             resolve(undefined);
+            document.removeEventListener("click", onClick);
         }
-    }, { once: true });
+    };
+    document.addEventListener("click", onClick, { once: true });
+    document.addEventListener("keydown", onKeyDown, { once: true });
 });
 // msミリ秒かけてフェードアウトする
 const fadeOut = (ms) => new Promise((resolve) => {

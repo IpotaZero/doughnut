@@ -1,5 +1,6 @@
 "use strict";
-const SceneNovel = class {
+class SceneNovel {
+    #voice = [new Audio("../assets/sounds/syariko.wav"), new Audio("../assets/sounds/me.wav")];
     constructor() {
         this.#clearContainer();
         this.#loop();
@@ -12,6 +13,7 @@ const SceneNovel = class {
             css: {
                 bottom: "8%",
             },
+            voice: this.#voice[voiceNum],
         });
         await waitOK();
         if (!itext.isEnd) {
@@ -26,19 +28,77 @@ const SceneNovel = class {
         [...container.children].forEach((c) => c.remove());
         [...document.head.children].filter((c) => c.tagName == "STYLE").forEach((c) => c.remove());
     }
-};
+}
+let voiceNum = 0;
 const story = async function* () {
-    yield "キーワードは、つながりコスモロジー";
-    await fadeOut(1000);
-    currentScene = new SceneMain();
-    yield "";
-    yield "「なぜ僕たちが老いや病に苦しむか、知ってるかな?」";
+    // voiceNum = 0: シャリ子
+    // voiceNum = 1: 僕
+    yield "シャリ子と僕の対話";
+    voiceNum = 1;
+    yield "「なぜ僕たちは生きることに苦しむか、知ってるかな?」";
+    voiceNum = 0;
     yield "「知らない」";
+    voiceNum = 1;
     yield "「仏陀によると、それは、僕たちが世界をバラバラなものだと思っているからだ」";
-    yield "「そうなの」";
+    voiceNum = 0;
+    yield "「そうなの、胡散臭いなあ」";
+    voiceNum = 1;
     yield "「重要なのは、本質を見ることだ」";
     await fadeOut(1000);
     currentScene = new SceneMain();
+    yield "";
+    voiceNum = 1;
+    yield "「マグカップとドーナツは同相」";
+    voiceNum = 0;
+    yield "「使い古されて臭くなった話」";
+    voiceNum = 1;
+    yield "「でも、小学生にもわかるものさ」";
+    yield "「君は君自身を特別な存在と思っているかもしれないけど、」";
+    yield "「君も、僕も、宇宙のほんの一部なんだよ」";
+    voiceNum = 0;
+    yield "「だから？」";
+    await fadeOut(1000);
+    currentScene = new SceneMain();
+    yield "";
+    voiceNum = 1;
+    yield "「ところで君はアドラー心理学を知っているかな？」";
+    voiceNum = 0;
+    yield "「知らないけど」";
+    voiceNum = 1;
+    yield "「人間は社会的存在であり、他者との『関係』を通じて自己を形成する」";
+    yield "「これは仏教における『縁起』の考え方によく似ていると思わないかい？」";
+    voiceNum = 0;
+    yield "「思わないけど」";
+    await fadeOut(1000);
+    currentScene = new SceneMain();
+    yield "";
+    voiceNum = 1;
+    yield "「僕が言いたいのは、人間も宇宙の部分集合だってことさ」";
+    voiceNum = 0;
+    yield "「なんで君はそんなに捻くれてしまったの」";
+    voiceNum = 1;
+    yield "「少しずつ捩れて、何度か穴が開いて、元には戻らなくなったのさ」";
+    voiceNum = 0;
+    yield "「哀れ」";
+    yield "「君が言いたいことはそんなんじゃなかったでしょ」";
+    await fadeOut(1000);
+    currentScene = new SceneMain();
+    yield "";
+    yield "「君が言いたいことは、そんなんじゃない」";
+    yield "「声にならない痛みを、難しい言葉で誤魔化して、笑っているんでしょう」";
+    yield "「泣き出したい衝動を、虚空に向かって投げつけているんでしょう」";
+    yield "「だから今、こうして蹲っているんでしょう？」";
+    await fadeOut(1000);
+    currentScene = new SceneMain();
+    yield "";
+    voiceNum = 1;
+    yield "「僕は君を知っている」";
+    yield "「今日はちょっと体調が悪かっただけ」";
+    yield "「アドラーによると、明日も昨日も存在しないから、」";
+    yield "「また、今日を精一杯生きようと思うよ」";
+    yield "「Q.E.D. (証明終了)」";
+    await fadeOut(1000);
+    currentScene = new SceneTitle();
     yield "";
     return "";
 };

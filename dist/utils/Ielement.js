@@ -57,10 +57,13 @@ class Itext extends Ielement {
     #tempDiv = document.createElement("div");
     #interval = 0;
     #originalHTML;
+    #voice = null;
+    #frame = 0;
     isEnd = false;
     ready;
     constructor(container, text, options = {}) {
         super(container, options);
+        this.#voice = options.voice ?? null;
         this.#setupText(text, options.speed ?? 24);
     }
     async #fetchHtmlFile(url) {
@@ -129,6 +132,12 @@ class Itext extends Ielement {
         });
     }
     #updateText(resolve) {
+        // ボイス再生
+        if (this.#voice && this.#frame % 2 == 0) {
+            this.#voice.currentTime = 0;
+            this.#voice.play();
+        }
+        this.#frame++;
         const spans = Array.from(this.getElementsByTagName("span")).filter((span) => span.hasAttribute("data-original") &&
             span.textContent.length < span.getAttribute("data-original").length);
         if (spans.length === 0) {

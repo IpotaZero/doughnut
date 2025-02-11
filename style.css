@@ -5,6 +5,10 @@
     box-sizing: border-box;
 
     image-rendering: pixelated;
+
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 html {
@@ -26,10 +30,6 @@ body {
 
     color: #111;
     font-size: 4vh;
-
-    -webkit-user-drag: none;
-    user-select: none;
-    -webkit-user-select: none;
 }
 
 #container {

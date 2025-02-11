@@ -73,6 +73,9 @@ class Itext extends Ielement {
     #interval = 0
     #originalHTML: string
 
+    #voice: HTMLAudioElement | null = null
+    #frame = 0
+
     isEnd = false
     ready: Promise<void>
 
@@ -83,9 +86,12 @@ class Itext extends Ielement {
             css?: NestedCSS
             className?: string
             speed?: number
+            voice?: HTMLAudioElement
         } = {}
     ) {
         super(container, options)
+
+        this.#voice = options.voice ?? null
 
         this.#setupText(text, options.speed ?? 24)
     }
@@ -162,6 +168,14 @@ class Itext extends Ielement {
     }
 
     #updateText(resolve: Function) {
+        // ボイス再生
+        if (this.#voice && this.#frame % 2 == 0) {
+            this.#voice.currentTime = 0
+            this.#voice.play()
+        }
+
+        this.#frame++
+
         const spans = Array.from(this.getElementsByTagName("span")).filter(
             (span) =>
                 span.hasAttribute("data-original") &&

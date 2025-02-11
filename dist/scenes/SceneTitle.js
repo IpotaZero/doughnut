@@ -1,4 +1,5 @@
 "use strict";
+let isFirst = false;
 const SceneTitle = class {
     constructor() {
         this.#clearContainer();
@@ -15,6 +16,9 @@ const SceneTitle = class {
         img.style.height = "100%";
         img.style.objectFit = "contain";
         container.appendChild(img);
+        if (isFirst)
+            return;
+        isFirst = true;
         const startButton = new Ielement(container, {
             css: {
                 top: "20%",

@@ -18,14 +18,14 @@ const SceneMain = class {
                 display: "grid",
                 gridTemplateColumns: `repeat(${images.length}, auto)` /* n列 */,
                 gridTemplateRows: "repeat(1, auto)" /* 1行 */,
-                // gap: "8%",
+                gap: "12%",
                 // padding: "20%",
             },
         });
         images.forEach((image, j) => {
             const img = new Iimage(imgContainer, `../assets/images/${image}.png`, {
                 css: {
-                    height: "30%",
+                    height: "40%",
                     cursor: "pointer",
                     ":hover": {
                         opacity: "0.5",
@@ -34,7 +34,7 @@ const SceneMain = class {
                         width: "100%",
                         height: "100%",
                         objectFit: "contain",
-                        filter: "drop-shadow(5px 5px 5px #aaa8)",
+                        filter: "drop-shadow(-5px 5px 5px #aaa8)",
                     },
                 },
             });
@@ -76,7 +76,10 @@ const SceneMain = class {
 };
 const questions = function* () {
     yield ["ドーナツと同相なのはどれ?", ["mug", "p-bottle"], 0];
-    // return ["", ["", "", ""], 0]
+    yield ["パンツと同相なのはどれ?", ["d-ring", "t-ring"], 0];
+    yield ["私と同相なのはどれ?", ["S", "T"], 1];
+    yield ["私と同相なのはどれ?", ["S", "T"], 1];
+    yield ["私と同相なのはどれ?", ["S", "T"], 1];
 };
 const questionsIterator = questions();
 //# sourceMappingURL=SceneMain.js.map
