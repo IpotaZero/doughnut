@@ -144,3 +144,8 @@ img {
         transform: translate(0, 0);
     }
 }
+
+@font-face {
+    font-family: "tegaki";
+    src: url(assets/mitimasu.ttf);
+}

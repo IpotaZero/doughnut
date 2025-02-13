@@ -72,16 +72,16 @@ const SceneTitle = class {
             },
         })
 
-        new Iimage(container, "assets/images/start.png", {
+        new Itext(container, "はじめから", {
             css: {
                 top: "20%",
                 left: "7%",
 
-                width: "20%",
-                height: "10%",
+                width: "18%",
+                height: "8%",
 
                 fontFamily: "tegaki",
-                fontSize: "5vh",
+                fontSize: "4vh",
                 backgroundColor: "white",
                 display: "none",
 
@@ -106,16 +106,16 @@ const SceneTitle = class {
             },
         })
 
-        new Iimage(container, "assets/images/continue.png", {
+        new Itext(container, "つづきから", {
             css: {
                 top: "25%",
                 left: "30%",
 
-                width: "20%",
-                height: "10%",
+                width: "18%",
+                height: "8%",
 
                 fontFamily: "tegaki",
-                fontSize: "5vh",
+                fontSize: "4vh",
                 backgroundColor: "white",
                 display: "none",
 
@@ -140,16 +140,16 @@ const SceneTitle = class {
             },
         })
 
-        new Iimage(container, "assets/images/delete.png", {
+        new Itext(container, "でーたをけす", {
             css: {
                 top: "40%",
                 left: "65%",
 
-                width: "20%",
-                height: "10%",
+                width: "18%",
+                height: "8%",
 
                 fontFamily: "tegaki",
-                fontSize: "5vh",
+                fontSize: "4vh",
                 backgroundColor: "white",
                 display: "none",
 

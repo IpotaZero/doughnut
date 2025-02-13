@@ -15,12 +15,14 @@ const SceneMain = class {
         this.#setupElement();
     }
     #setupElement() {
-        const resetButton = new Iimage(container, "assets/images/reset.png", {
+        const resetButton = new Itext(container, "りせっと", {
             css: {
                 width: "13%",
                 height: "8%",
                 top: "10%",
                 left: "4%",
+                fontFamily: "tegaki",
+                fontSize: "4vh",
                 borderRadius: "1vh",
                 border: "#111 solid 0.4vh",
                 ":hover": {
