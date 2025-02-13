@@ -29,7 +29,7 @@ class SceneNovel {
         [...document.head.children].filter((c) => c.tagName == "STYLE").forEach((c) => c.remove());
     }
 }
-let voiceNum = 0;
+let voiceNum = 1;
 const story = async function* () {
     // voiceNum = 0: シャリ子
     // voiceNum = 1: 僕
@@ -45,7 +45,7 @@ const story = async function* () {
     voiceNum = 1;
     yield "「重要なのは、本質を見ることだ」";
     await fadeOut(1000);
-    currentScene = new SceneMain();
+    currentScene = new SceneMain(12, [3000, 4000, 5000, 6000, 7000, 8000]);
     yield "";
     voiceNum = 1;
     yield "「マグカップとドーナツは同相」";
@@ -58,7 +58,7 @@ const story = async function* () {
     voiceNum = 0;
     yield "「だから？」";
     await fadeOut(1000);
-    currentScene = new SceneMain();
+    currentScene = new SceneMain(16, [1000, 2000, 2500, 3000, 4000, 4333, 4666, 5000]);
     yield "";
     voiceNum = 1;
     yield "「ところで君はアドラー心理学を知っているかな？」";
@@ -70,7 +70,7 @@ const story = async function* () {
     voiceNum = 0;
     yield "「思わないけど」";
     await fadeOut(1000);
-    currentScene = new SceneMain();
+    currentScene = new SceneMain(18, [1000, 2000, 2750, 3000, 3750, 4000, 4333, 4666, 5000]);
     yield "";
     voiceNum = 1;
     yield "「僕が言いたいのは、人間も宇宙の部分集合だってことさ」";
@@ -82,14 +82,14 @@ const story = async function* () {
     yield "「哀れ」";
     yield "「君が言いたいことはそんなんじゃなかったでしょ」";
     await fadeOut(1000);
-    currentScene = new SceneMain();
+    currentScene = new SceneMain(16, [1000, 1500, 2000, 2333, 2500, 3000, 4000, 5000]);
     yield "";
     yield "「君が言いたいことは、そんなんじゃない」";
     yield "「声にならない痛みを、難しい言葉で誤魔化して、笑っているんでしょう」";
     yield "「泣き出したい衝動を、虚空に向かって投げつけているんでしょう」";
     yield "「だから今、こうして蹲っているんでしょう？」";
     await fadeOut(1000);
-    currentScene = new SceneMain();
+    currentScene = new SceneMain(18, [1000, 1750, 2000, 2750, 3000, 3666, 4000, 4750, 5000]);
     yield "";
     voiceNum = 1;
     yield "「僕は君を知っている」";

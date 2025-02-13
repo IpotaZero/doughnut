@@ -1,70 +1,115 @@
 "use strict";
+const [w, h] = [1440, 810];
 const SceneMain = class {
-    constructor() {
+    #notes;
+    #originNotes;
+    #startTime = Date.now();
+    #score = 0;
+    #itext;
+    #sound = new Audio("assets/sounds/se_touch.wav");
+    #targetScore;
+    #interval = 0;
+    constructor(targetScore, notes) {
         this.#clearContainer();
-        this.#game();
+        this.#originNotes = [...notes];
+        this.#notes = [...notes];
+        this.#targetScore = targetScore;
+        this.#itext = new Itext(container, "タイミングよくZを押す", {
+            css: {
+                top: "14%",
+                left: "8%",
+            },
+        });
+        new Itext(container, `Target Score: ${targetScore}`, {
+            css: {
+                top: "8%",
+                left: "8%",
+            },
+        });
+        const cvs = document.createElement("canvas");
+        cvs.width = w;
+        cvs.height = h;
+        container.appendChild(cvs);
+        const ctx = cvs.getContext("2d", {
+            willReadFrequently: true,
+        });
+        this.#interval = setInterval(() => {
+            this.#update(ctx);
+        }, 1000 / 60);
     }
-    #game() {
-        const { value, done } = questionsIterator.next();
-        if (done) {
-            currentScene = new SceneTitle();
-            return;
+    #update(ctx) {
+        const elapsed = Date.now() - this.#startTime;
+        ctx.clearRect(0, 0, w, h);
+        ctx.strokeStyle = `black`;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(w / 2, h / 2, 100, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.lineWidth = 1;
+        this.#notes = this.#notes.filter((note) => note - elapsed > -50);
+        let isClicked = true;
+        let isMiss = false;
+        this.#notes.forEach((note) => {
+            const radius = 100 + (note - elapsed) / 5;
+            ctx.beginPath();
+            ctx.arc(w / 2, h / 2, radius, 0, Math.PI * 2);
+            ctx.stroke();
+            if (keyboard.pushed.has("ok")) {
+                const onClicked = (score) => {
+                    isClicked = false;
+                    this.#score += score;
+                    this.#itext.innerHTML = `Score: ${this.#score}`;
+                    note = -1;
+                    this.#sound.currentTime = 0;
+                    this.#sound.play();
+                    new Ianimation(1000).start((progress) => {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 0, 0, ${1 - progress})`;
+                        ctx.arc(w / 2, h / 2, 100 + 200 * progress, 0, Math.PI * 2);
+                        ctx.stroke();
+                        ctx.font = "48px serif";
+                        ctx.textAlign = "center";
+                        ctx.fillStyle = `rgba(0, 0, 0, ${1 - progress})`;
+                        ctx.beginPath();
+                        ctx.fillText(["GOOD", "GREAT", "PERFECT"][score - 1], w / 2, h / 2 - 100 - 100 * progress);
+                    });
+                };
+                const diff = Math.abs(note - elapsed);
+                // 100ms以内なら
+                if (diff < 50) {
+                    onClicked(3);
+                }
+                else if (diff < 75) {
+                    onClicked(2);
+                }
+                else if (diff < 100) {
+                    onClicked(1);
+                }
+                else {
+                    isMiss = true;
+                }
+            }
+        });
+        if (isClicked && isMiss) {
+            this.#score--;
+            this.#itext.innerHTML = `Score: ${this.#score}`;
         }
-        const [text, images, answer] = value;
-        const imgContainer = new Ielement(container, {
-            css: {
-                width: "100%",
-                height: "100%",
-                display: "grid",
-                gridTemplateColumns: `repeat(${images.length}, auto)` /* n列 */,
-                gridTemplateRows: "repeat(1, auto)" /* 1行 */,
-                gap: "12%",
-                // padding: "20%",
-            },
-        });
-        images.forEach((image, j) => {
-            const img = new Iimage(imgContainer, `../assets/images/${image}.png`, {
-                css: {
-                    height: "40%",
-                    cursor: "pointer",
-                    ":hover": {
-                        opacity: "0.5",
-                    },
-                    " img": {
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain",
-                        filter: "drop-shadow(-5px 5px 5px #aaa8)",
-                    },
-                },
-            });
-            img.tabIndex = j + 1;
-            img.onkeydown = (e) => {
-                if (["KeyZ", "Space", "Enter"].includes(e.code)) {
-                    img.click();
-                }
-                else if (e.code == "ArrowRight") {
-                    ;
-                    imgContainer.children[(j + 1) % 3]?.focus();
-                }
-                else if (e.code == "ArrowLeft") {
-                    ;
-                    imgContainer.children[(j + 2) % 3]?.focus();
-                }
-            };
-            img.onclick = () => {
-                if (j == answer) {
-                    this.#onClear();
-                }
-            };
-        });
-        new Itext(container, text, {
-            css: {
-                bottom: "5%",
-            },
-        });
+        if (this.#notes.length == 0) {
+            clearInterval(this.#interval);
+            if (this.#score >= this.#targetScore) {
+                this.#end();
+            }
+            else {
+                this.#miss();
+            }
+        }
+        inputHandler.updateInput();
     }
-    async #onClear() {
+    async #miss() {
+        await fadeOut(1000);
+        currentScene = new SceneMain(this.#targetScore, this.#originNotes);
+    }
+    async #end() {
         await fadeOut(1000);
         currentScene = new SceneNovel();
     }
@@ -74,12 +119,4 @@ const SceneMain = class {
         [...document.head.children].filter((c) => c.tagName == "STYLE").forEach((c) => c.remove());
     }
 };
-const questions = function* () {
-    yield ["ドーナツと同相なのはどれ?", ["mug", "p-bottle"], 0];
-    yield ["パンツと同相なのはどれ?", ["d-ring", "t-ring"], 0];
-    yield ["私と同相なのはどれ?", ["S", "T"], 1];
-    yield ["私と同相なのはどれ?", ["S", "T"], 1];
-    yield ["私と同相なのはどれ?", ["S", "T"], 1];
-};
-const questionsIterator = questions();
 //# sourceMappingURL=SceneMain.js.map

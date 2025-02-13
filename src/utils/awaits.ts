@@ -9,21 +9,19 @@ const sleep = (ms: number): Promise<void> =>
 // クリック待ち
 const waitOK = () =>
     new Promise((resolve) => {
-        const onClick = () => {
+        const onClick = new Iinput(document, "click", () => {
+            onKeydown.remove()
+            onClick.remove()
             resolve(undefined)
-            document.removeEventListener("keydown", onKeyDown)
-        }
+        })
 
-        const onKeyDown = (e: KeyboardEvent) => {
-            if (["Enter", "KeyZ", "Space"].includes(e.code)) {
+        const onKeydown = new Iinput(document, "keydown", (e) => {
+            if (["Enter", "KeyZ", "Space"].includes((e as KeyboardEvent).code)) {
+                onKeydown.remove()
+                onClick.remove()
                 resolve(undefined)
-                document.removeEventListener("click", onClick)
             }
-        }
-
-        document.addEventListener("click", onClick, { once: true })
-
-        document.addEventListener("keydown", onKeyDown, { once: true })
+        })
     })
 
 // msミリ秒かけてフェードアウトする

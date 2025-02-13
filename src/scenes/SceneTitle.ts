@@ -43,8 +43,16 @@ const SceneTitle = class {
         }
 
         startButton.onclick = async () => {
+            iinput.remove()
             await fadeOut(1000)
             currentScene = new SceneNovel()
         }
+
+        const iinput = new Iinput(document, "keydown", (e) => {
+            if (["Enter", "KeyZ", "Space"].includes((e as KeyboardEvent).code)) {
+                startButton.click()
+                iinput.remove()
+            }
+        })
     }
 }

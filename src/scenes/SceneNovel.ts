@@ -36,7 +36,7 @@ class SceneNovel {
     }
 }
 
-let voiceNum = 0
+let voiceNum = 1
 
 const story = async function* (): AsyncGenerator<string, string, unknown> {
     // voiceNum = 0: シャリ子
@@ -55,7 +55,7 @@ const story = async function* (): AsyncGenerator<string, string, unknown> {
     yield "「重要なのは、本質を見ることだ」"
 
     await fadeOut(1000)
-    currentScene = new SceneMain()
+    currentScene = new SceneMain(12, [3000, 4000, 5000, 6000, 7000, 8000])
     yield ""
 
     voiceNum = 1
@@ -70,7 +70,7 @@ const story = async function* (): AsyncGenerator<string, string, unknown> {
     yield "「だから？」"
 
     await fadeOut(1000)
-    currentScene = new SceneMain()
+    currentScene = new SceneMain(16, [1000, 2000, 2500, 3000, 4000, 4333, 4666, 5000])
     yield ""
 
     voiceNum = 1
@@ -84,7 +84,7 @@ const story = async function* (): AsyncGenerator<string, string, unknown> {
     yield "「思わないけど」"
 
     await fadeOut(1000)
-    currentScene = new SceneMain()
+    currentScene = new SceneMain(18, [1000, 2000, 2750, 3000, 3750, 4000, 4333, 4666, 5000])
     yield ""
 
     voiceNum = 1
@@ -98,7 +98,7 @@ const story = async function* (): AsyncGenerator<string, string, unknown> {
     yield "「君が言いたいことはそんなんじゃなかったでしょ」"
 
     await fadeOut(1000)
-    currentScene = new SceneMain()
+    currentScene = new SceneMain(16, [1000, 1500, 2000, 2333, 2500, 3000, 4000, 5000])
     yield ""
 
     yield "「君が言いたいことは、そんなんじゃない」"
@@ -107,7 +107,7 @@ const story = async function* (): AsyncGenerator<string, string, unknown> {
     yield "「だから今、こうして蹲っているんでしょう？」"
 
     await fadeOut(1000)
-    currentScene = new SceneMain()
+    currentScene = new SceneMain(18, [1000, 1750, 2000, 2750, 3000, 3666, 4000, 4750, 5000])
     yield ""
 
     voiceNum = 1
