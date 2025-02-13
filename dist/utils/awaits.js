@@ -9,24 +9,26 @@ const sleep = (ms) => new Promise((resolve) => {
 const waitOK = () => new Promise((resolve) => {
     const onClick = new Iinput(document, "click", () => {
         onKeydown.remove();
-        onClick.remove();
         resolve(undefined);
+    }, {
+        once: true,
     });
     const onKeydown = new Iinput(document, "keydown", (e) => {
         if (["Enter", "KeyZ", "Space"].includes(e.code)) {
-            onKeydown.remove();
             onClick.remove();
             resolve(undefined);
         }
+    }, {
+        once: true,
     });
 });
 // msミリ秒かけてフェードアウトする
 const fadeOut = (ms) => new Promise((resolve) => {
     container.style.transition = `opacity ${ms}ms`;
     container.style.opacity = "0";
-    container.addEventListener("transitionend", () => {
+    setTimeout(() => {
         container.style.opacity = "1";
         resolve(undefined);
-    }, { once: true });
+    }, ms);
 });
 //# sourceMappingURL=awaits.js.map

@@ -15,12 +15,15 @@ type Selector =
     | pseudoElementsSelector
     // | `:not(${pseudoClassSelector | classSelector | idSelector | tagSelector})`
     | `${childSelector}${pseudoClassSelector}`
+    | `${pseudoClassSelector}${tagSelector | classSelector | idSelector}`
+
+type A = Selector | `:not(${Selector})` | `${pseudoClassSelector} ${"~" | "+"} ${Selector}`
 
 type length = `${number}%` | `${number}vh`
 type time = `${number}s` | `${number}ms`
 
 type NestedCSS = {
-    [key in Selector]?: Partial<CSSStyleDeclaration> | NestedCSS // カスタムセレクタや未知のプロパティも許容
+    [key in A]?: Partial<CSSStyleDeclaration> | NestedCSS // カスタムセレクタや未知のプロパティも許容
 } & {
     width?: length
     height?: length

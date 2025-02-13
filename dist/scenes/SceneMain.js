@@ -1,117 +1,178 @@
 "use strict";
-const [w, h] = [1440, 810];
 const SceneMain = class {
-    #notes;
-    #originNotes;
-    #startTime = Date.now();
-    #score = 0;
+    #grid;
+    #step;
+    #src;
+    #size;
+    #reverse;
+    #listeners = [];
     #itext;
-    #sound = new Audio("assets/sounds/se_touch.wav");
-    #targetScore;
-    #interval = 0;
-    constructor(targetScore, notes) {
+    constructor(src, size, reverse) {
         this.#clearContainer();
-        this.#originNotes = [...notes];
-        this.#notes = [...notes];
-        this.#targetScore = targetScore;
-        this.#itext = new Itext(container, "タイミングよくZを押す", {
+        this.#src = src;
+        this.#size = size;
+        this.#reverse = reverse;
+        this.#setupElement();
+    }
+    #setupElement() {
+        const resetButton = new Iimage(container, "assets/images/reset.png", {
             css: {
-                top: "14%",
-                left: "8%",
+                width: "13%",
+                height: "8%",
+                top: "10%",
+                left: "4%",
+                borderRadius: "1vh",
+                border: "#111 solid 0.4vh",
+                ":hover": {
+                    backgroundColor: "#1114",
+                    cursor: "pointer",
+                },
             },
         });
-        new Itext(container, `Target Score: ${targetScore}`, {
+        resetButton.onclick = async () => {
+            this.#listeners.forEach((l) => {
+                l.remove();
+            });
+            await fadeOut(500);
+            this.#clearContainer();
+            this.#setupElement();
+        };
+        this.#step = this.#reverse.length;
+        const grid = new Ielement(container, {
             css: {
-                top: "8%",
-                left: "8%",
+                height: "50%",
+                aspectRatio: "1",
+                display: "grid",
+                gridTemplateColumns: `repeat(${this.#size}, 1fr)`,
+                gridTemplateRows: `repeat(${this.#size}, 1fr)`,
+                backgroundColor: "#111",
             },
         });
-        const cvs = document.createElement("canvas");
-        cvs.width = w;
-        cvs.height = h;
-        container.appendChild(cvs);
-        const ctx = cvs.getContext("2d", {
-            willReadFrequently: true,
+        this.#grid = this.#grid = Array.from({ length: this.#size }, () => []);
+        Iloop([0, 0], [this.#size - 1, this.#size - 1], (r, c) => {
+            new Ielement(grid, {
+                css: {
+                    width: "100%",
+                    height: "100%",
+                    gridRow: `${r + 1}/${r + 2}`,
+                    gridColumn: `${c + 1}/${c + 2}`,
+                    backgroundColor: "lightGray",
+                    border: "azure 1px solid",
+                },
+            });
+            const cell = new Ielement(grid, {
+                css: {
+                    width: "100%",
+                    height: "100%",
+                    gridRow: `${r + 1}/${r + 2}`,
+                    gridColumn: `${c + 1}/${c + 2}`,
+                    backgroundColor: "#111",
+                    border: "azure 1px solid",
+                    backgroundImage: `url(${this.#src})`,
+                    backgroundSize: `${100 * this.#size}% ${100 * this.#size}%`,
+                    backgroundPositionX: `${(100 / (this.#size - 1)) * c}%`,
+                    backgroundPositionY: `${(100 / (this.#size - 1)) * r}%`,
+                    transition: "transform 0.5s, opacity 0s 0.15s, border 1s",
+                    boxSizing: "content-box",
+                    ".reversed": {
+                        transform: "rotateY(180deg)",
+                        opacity: "0",
+                    },
+                    ".remove-border": {
+                        transition: "all 1s",
+                        borderColor: "rgba(0,0,0,0)",
+                    },
+                },
+            });
+            this.#listeners.push(new Iinput(cell, "click", () => {
+                this.#step--;
+                this.#itext.innerText = `残り: ${this.#step}`;
+                this.#onClick(r, c);
+            }));
+            this.#grid[r][c] = cell;
         });
-        this.#interval = setInterval(() => {
-            this.#update(ctx);
-        }, 1000 / 60);
-    }
-    #update(ctx) {
-        const elapsed = Date.now() - this.#startTime;
-        ctx.clearRect(0, 0, w, h);
-        ctx.strokeStyle = `black`;
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(w / 2, h / 2, 100, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.lineWidth = 1;
-        this.#notes = this.#notes.filter((note) => note - elapsed > -50);
-        let isClicked = true;
-        let isMiss = false;
-        this.#notes.forEach((note) => {
-            const radius = 100 + (note - elapsed) / 5;
-            ctx.beginPath();
-            ctx.arc(w / 2, h / 2, radius, 0, Math.PI * 2);
-            ctx.stroke();
-            if (keyboard.pushed.has("ok")) {
-                const onClicked = (score) => {
-                    isClicked = false;
-                    this.#score += score;
-                    this.#itext.innerHTML = `Score: ${this.#score}`;
-                    note = -1;
-                    this.#sound.currentTime = 0;
-                    this.#sound.play();
-                    new Ianimation(1000).start((progress) => {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 0, 0, ${1 - progress})`;
-                        ctx.arc(w / 2, h / 2, 100 + 200 * progress, 0, Math.PI * 2);
-                        ctx.stroke();
-                        ctx.font = "48px serif";
-                        ctx.textAlign = "center";
-                        ctx.fillStyle = `rgba(0, 0, 0, ${1 - progress})`;
-                        ctx.beginPath();
-                        ctx.fillText(["GOOD", "GREAT", "PERFECT"][score - 1], w / 2, h / 2 - 100 - 100 * progress);
-                    });
-                };
-                const diff = Math.abs(note - elapsed);
-                // 100ms以内なら
-                if (diff < 50) {
-                    onClicked(3);
-                }
-                else if (diff < 75) {
-                    onClicked(2);
-                }
-                else if (diff < 100) {
-                    onClicked(1);
-                }
-                else {
-                    isMiss = true;
-                }
-            }
+        this.#itext = new Itext(container, `残り: ${this.#step}`, {
+            css: {
+                top: "10%",
+            },
         });
-        if (isClicked && isMiss) {
-            this.#score--;
-            this.#itext.innerHTML = `Score: ${this.#score}`;
-        }
-        if (this.#notes.length == 0) {
-            clearInterval(this.#interval);
-            if (this.#score >= this.#targetScore) {
-                this.#end();
-            }
-            else {
-                this.#miss();
-            }
-        }
-        inputHandler.updateInput();
+        this.#reverse.forEach(([r, c]) => {
+            this.#onClick(r, c);
+        });
     }
-    async #miss() {
-        await fadeOut(1000);
-        currentScene = new SceneMain(this.#targetScore, this.#originNotes);
+    #onClick(r, c) {
+        Iloop([r - 1, c - 1], [r + 1, c + 1], (R, C) => {
+            const isInRange = 0 <= R && R <= this.#size - 1 && 0 <= C && C <= this.#size - 1;
+            if (!isInRange)
+                return;
+            this.#grid[R][C].classList.toggle("reversed");
+        });
+        if (this.#grid.flat().every((cell) => !cell.classList.contains("reversed"))) {
+            this.#end();
+            return;
+        }
+        if (this.#step == 0) {
+            this.#reset();
+        }
+    }
+    async #reset() {
+        this.#listeners.forEach((l) => {
+            l.remove();
+        });
+        await sleep(500);
+        await fadeOut(500);
+        this.#clearContainer();
+        this.#setupElement();
     }
     async #end() {
-        await fadeOut(1000);
-        currentScene = new SceneNovel();
+        this.#listeners.forEach((l) => {
+            l.remove();
+        });
+        await sleep(500);
+        this.#grid.flat().forEach((cell) => {
+            cell.classList.add("remove-border");
+        });
+        await sleep(1000);
+        new Itext(container, "次へ", {
+            css: {
+                top: "80%",
+            },
+        });
+        await waitOK();
+        this.#clearContainer();
+        const itext = new Itext(container, "Saveしますか?", { css: { top: "50%" } });
+        const icommand = new Icommand(container, new Idict({
+            "": ["はい", "いいえ"],
+        }), {
+            css: {
+                top: "60%",
+                width: "30%",
+                height: "20%",
+                display: "block",
+                " .i-command-option": {
+                    position: "relative",
+                    width: "100%",
+                    height: "50%",
+                    borderRadius: "6vh",
+                    ":hover": {
+                        backgroundColor: "#1114",
+                        cursor: "pointer",
+                    },
+                },
+            },
+        });
+        icommand.on("0", async () => {
+            itext.innerHTML = "Saveしました";
+            await sleep(2000);
+            await fadeOut(1000);
+            currentScene = new SceneNovel();
+            storyNum++;
+            localStorage.setItem("save", "" + storyNum);
+        });
+        icommand.on("1", async () => {
+            await fadeOut(1000);
+            currentScene = new SceneNovel();
+        });
     }
     #clearContainer() {
         ;

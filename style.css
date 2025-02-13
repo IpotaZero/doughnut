@@ -28,7 +28,7 @@ body {
     background-blend-mode: lighten;
     background-color: #111;
 
-    color: #111;
+    color: azure;
     font-size: 4vh;
 }
 
@@ -53,6 +53,8 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
 
+    color: #111;
+
     overflow: hidden;
 
     & canvas {
@@ -61,9 +63,8 @@ body {
     }
 }
 
-i-element,
-i-text,
-i-command {
+/* i-element- で始まるクラス名を持つ要素に適用 */
+[class^="i-element-"] {
     position: absolute;
 
     display: flex;
@@ -85,51 +86,11 @@ a {
 }
 
 img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
     object-fit: cover;
 }
-
-@keyframes fadeout {
-    0% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-.fadeout {
-    animation-name: fadeout;
-    animation-duration: 1s;
-    animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
-}
-
-/* 揺れるアニメーション */
-@keyframes shake {
-    0%,
-    100% {
-        transform: translateX(0);
-    }
-    20%,
-    60% {
-        transform: translateX(-3px);
-    }
-    40%,
-    80% {
-        transform: translateX(3px);
-    }
-}
-
-/* 揺れを適用するクラス */
-.shake {
-    animation: shake 0.3s ease infinite;
-}
-/* 
-@font-face {
-    font-family: "mutsuki";
-    src: url("assets/Mutsuki.ttf") format("truetype");
-} */
 
 #error {
     display: none;
@@ -144,56 +105,42 @@ img {
     }
 }
 
-.title {
-    animation: rolling 12s infinite;
-    animation-delay: 2s;
+.shake {
+    animation: shake 0.8s infinite;
 }
 
-@keyframes rolling {
+@keyframes shake {
     0% {
-        transform: rotateY(0);
+        transform: translate(0, 0);
     }
-
+    10% {
+        transform: translate(-0.2vh, 0.3vh);
+    }
+    20% {
+        transform: translate(0.3vh, -0.2vh);
+    }
+    30% {
+        transform: translate(-0.3vh, -0.1vh);
+    }
     40% {
-        transform: rotateY(360deg);
+        transform: translate(0.1vh, 0.3vh);
     }
-
     50% {
-        transform: rotateY(360deg);
+        transform: translate(-0.2vh, -0.3vh);
     }
-
+    60% {
+        transform: translate(0.3vh, 0.1vh);
+    }
+    70% {
+        transform: translate(-0.1vh, -0.2vh);
+    }
+    80% {
+        transform: translate(0.2vh, 0.3vh);
+    }
     90% {
-        transform: rotateY(0deg);
-    }
-
-    100% {
-        transform: rotateY(0deg);
-    }
-}
-/* 
-i-command i-text:hover:nth-child(even) {
-    animation: yurayura 3s infinite ease-in-out;
-}
-
-i-command i-text:hover:nth-child(odd) {
-    animation: yurayura 3s infinite ease-in-out;
-    animation-direction: reverse;
-}
-
-@keyframes yurayura {
-    0% {
-        transform: translateX(0) rotate(0deg) scale(1);
-    }
-    25% {
-        transform: translateX(-1%) rotate(-1deg) scale(1.01);
-    }
-    50% {
-        transform: translateX(0) rotate(0deg) scale(1);
-    }
-    75% {
-        transform: translateX(1%) rotate(1deg) scale(1.01);
+        transform: translate(-0.3vh, 0.1vh);
     }
     100% {
-        transform: translateX(0) rotate(0deg) scale(1);
+        transform: translate(0, 0);
     }
-} */
+}

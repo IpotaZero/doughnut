@@ -27,6 +27,8 @@ class SceneNovel {
 
         itext.remove()
 
+        await sleep(10)
+
         this.#loop()
     }
 
@@ -38,90 +40,130 @@ class SceneNovel {
 
 let voiceNum = 1
 
-const story = async function* (): AsyncGenerator<string, string, unknown> {
-    // voiceNum = 0: シャリ子
-    // voiceNum = 1: 僕
-    yield "シャリ子と僕の対話"
+const stories = [
+    async function* (): AsyncGenerator<string, string, unknown> {
+        // voiceNum = 0: シャリ子
+        // voiceNum = 1: 僕
+        yield "シャリ子と僕の対話"
 
-    voiceNum = 1
-    yield "「なぜ僕たちは生きることに苦しむか、知ってるかな?」"
-    voiceNum = 0
-    yield "「知らない」"
-    voiceNum = 1
-    yield "「仏陀によると、それは、僕たちが世界をバラバラなものだと思っているからだ」"
-    voiceNum = 0
-    yield "「そうなの、胡散臭いなあ」"
-    voiceNum = 1
-    yield "「重要なのは、本質を見ることだ」"
+        voiceNum = 1
+        yield "「なぜ僕たちは生きることに苦しむか、知ってるかな?」"
+        voiceNum = 0
+        yield "「知らない」"
+        voiceNum = 1
+        yield "「仏陀によると、それは、僕たちが世界をバラバラなものだと思っているからだ」"
+        voiceNum = 0
+        yield "「そうなの、胡散臭いなあ」"
+        voiceNum = 1
+        yield "「重要なのは、本質を見ることだ」"
 
-    await fadeOut(1000)
-    currentScene = new SceneMain(12, [3000, 4000, 5000, 6000, 7000, 8000])
-    yield ""
+        await fadeOut(1000)
+        currentScene = new SceneMain("assets/images/mug.png", 4, [
+            [0, 0],
+            [3, 3],
+            [2, 1],
+        ])
+        storyIterator = stories[1]()
+        return ""
+    },
+    async function* (): AsyncGenerator<string, string, unknown> {
+        voiceNum = 1
+        yield "「マグカップとドーナツは同相」"
+        voiceNum = 0
+        yield "「使い古されて臭くなった話」"
+        voiceNum = 1
+        yield "「でも、小学生にもわかるものさ」"
+        yield "「君は君自身を特別な存在と思っているかもしれないけど、」"
+        yield "「君も、僕も、宇宙のほんの一部なんだよ」"
+        voiceNum = 0
+        yield "「だから？」"
 
-    voiceNum = 1
-    yield "「マグカップとドーナツは同相」"
-    voiceNum = 0
-    yield "「使い古されて臭くなった話」"
-    voiceNum = 1
-    yield "「でも、小学生にもわかるものさ」"
-    yield "「君は君自身を特別な存在と思っているかもしれないけど、」"
-    yield "「君も、僕も、宇宙のほんの一部なんだよ」"
-    voiceNum = 0
-    yield "「だから？」"
+        await fadeOut(1000)
+        currentScene = new SceneMain("assets/images/p-bottle.png", 4, [
+            [0, 0],
+            [3, 3],
+            [2, 1],
+            [3, 2],
+        ])
+        storyIterator = stories[2]()
+        return ""
+    },
+    async function* () {
+        voiceNum = 1
+        yield "「ところで君はアドラー心理学を知っているかな？」"
+        voiceNum = 0
+        yield "「知らないけど」"
+        voiceNum = 1
+        yield "「人間は社会的存在であり、他者との『関係』を通じて自己を形成する」"
+        yield "「これは仏教における『縁起』の考え方によく似ていると思わないかい？」"
+        voiceNum = 0
+        yield "「思わないけど」"
 
-    await fadeOut(1000)
-    currentScene = new SceneMain(16, [1000, 2000, 2500, 3000, 4000, 4333, 4666, 5000])
-    yield ""
+        await fadeOut(1000)
+        currentScene = new SceneMain("assets/images/d-ring.png", 4, [
+            [0, 0],
+            [3, 3],
+            [1, 2],
+            [3, 2],
+            [3, 1],
+        ])
+        storyIterator = stories[3]()
+        return ""
+    },
+    async function* () {
+        voiceNum = 1
+        yield "「僕が言いたいのは、人間も宇宙の部分集合だってことさ」"
+        voiceNum = 0
+        yield "「なんで君はそんなに捻くれてしまったの」"
+        voiceNum = 1
+        yield "「少しずつ捩れて、何度か穴が開いて、元には戻らなくなったのさ」"
+        voiceNum = 0
+        yield "「哀れ」"
+        yield "「君が言いたいことはそんなんじゃなかったでしょ」"
 
-    voiceNum = 1
-    yield "「ところで君はアドラー心理学を知っているかな？」"
-    voiceNum = 0
-    yield "「知らないけど」"
-    voiceNum = 1
-    yield "「人間は社会的存在であり、他者との『関係』を通じて自己を形成する」"
-    yield "「これは仏教における『縁起』の考え方によく似ていると思わないかい？」"
-    voiceNum = 0
-    yield "「思わないけど」"
+        await fadeOut(1000)
+        currentScene = new SceneMain("assets/images/box.png", 4, [
+            [0, 1],
+            [3, 2],
+            [3, 1],
+            [2, 3],
+            [0, 3],
+            [0, 2],
+        ])
+        storyIterator = stories[4]()
+        return ""
+    },
+    async function* () {
+        yield "「君が言いたいことは、そんなんじゃない」"
+        yield "「声にならない痛みを、難しい言葉で誤魔化して、笑っているんでしょう」"
+        yield "「泣き出したい衝動を、虚空に向かって投げつけているんでしょう」"
+        yield "「だから今、こうして蹲っているんでしょう？」"
 
-    await fadeOut(1000)
-    currentScene = new SceneMain(18, [1000, 2000, 2750, 3000, 3750, 4000, 4333, 4666, 5000])
-    yield ""
+        await fadeOut(1000)
+        currentScene = new SceneMain("assets/images/doughnut.png", 4, [
+            [3, 0],
+            [3, 1],
+            [0, 2],
+            [1, 1],
+            [1, 3],
+            [3, 3],
+            [0, 3],
+        ])
+        storyIterator = stories[5]()
+        return ""
+    },
+    async function* () {
+        voiceNum = 1
+        yield "「僕は君を知っている」"
+        yield "「今日はちょっと体調が悪かっただけ」"
+        yield "「アドラーによると、明日も昨日も存在しないから、」"
+        yield "「また、今日を精一杯生きようと思うよ」"
+        yield "「Q.E.D. (証明終了)」"
 
-    voiceNum = 1
-    yield "「僕が言いたいのは、人間も宇宙の部分集合だってことさ」"
-    voiceNum = 0
-    yield "「なんで君はそんなに捻くれてしまったの」"
-    voiceNum = 1
-    yield "「少しずつ捩れて、何度か穴が開いて、元には戻らなくなったのさ」"
-    voiceNum = 0
-    yield "「哀れ」"
-    yield "「君が言いたいことはそんなんじゃなかったでしょ」"
+        await fadeOut(1000)
+        currentScene = new SceneTitle()
+        return ""
+    },
+]
 
-    await fadeOut(1000)
-    currentScene = new SceneMain(16, [1000, 1500, 2000, 2333, 2500, 3000, 4000, 5000])
-    yield ""
-
-    yield "「君が言いたいことは、そんなんじゃない」"
-    yield "「声にならない痛みを、難しい言葉で誤魔化して、笑っているんでしょう」"
-    yield "「泣き出したい衝動を、虚空に向かって投げつけているんでしょう」"
-    yield "「だから今、こうして蹲っているんでしょう？」"
-
-    await fadeOut(1000)
-    currentScene = new SceneMain(18, [1000, 1750, 2000, 2750, 3000, 3666, 4000, 4750, 5000])
-    yield ""
-
-    voiceNum = 1
-    yield "「僕は君を知っている」"
-    yield "「今日はちょっと体調が悪かっただけ」"
-    yield "「アドラーによると、明日も昨日も存在しないから、」"
-    yield "「また、今日を精一杯生きようと思うよ」"
-    yield "「Q.E.D. (証明終了)」"
-
-    await fadeOut(1000)
-    currentScene = new SceneTitle()
-    yield ""
-
-    return ""
-}
-
-const storyIterator: AsyncGenerator<string, string, unknown> = story()
+let storyIterator: AsyncGenerator<string, string, unknown> = stories[0]()

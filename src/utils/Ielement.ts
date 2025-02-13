@@ -19,9 +19,10 @@ class Ielement extends HTMLElement {
         } = {}
     ) {
         super()
+
         this.#setCSS(options.css)
 
-        if (options.className) this.classList.add(options.className)
+        if (options.className) this.className += " " + options.className
 
         container.appendChild(this)
     }
@@ -96,7 +97,7 @@ class Itext extends Ielement {
         this.#setupText(text, options.speed ?? 24)
     }
 
-    async #fetchHtmlFile(url: string): Promise<string> {
+    async #fetchHTMLFile(url: string): Promise<string> {
         try {
             const response = await fetch(url, { cache: "no-store" })
 
@@ -119,7 +120,7 @@ class Itext extends Ielement {
         if (text.endsWith(".html")) {
             this.innerHTML = "読み込み中..."
 
-            text = await this.#fetchHtmlFile(text)
+            text = await this.#fetchHTMLFile(text)
         }
 
         // 元のHTMLを保存
@@ -320,7 +321,7 @@ class Icommand extends Ielement {
 customElements.define("i-command", Icommand)
 
 class Iimage extends Ielement {
-    constructor(container: HTMLElement, src: string, options: { css?: NestedCSS } = {}) {
+    constructor(container: HTMLElement, src: string, options: { css?: NestedCSS; className?: string } = {}) {
         super(container, options)
 
         const img = new Image()
@@ -334,3 +335,57 @@ class Iimage extends Ielement {
 }
 
 customElements.define("i-image", Iimage)
+
+class Ianime extends Ielement {
+    #frames: number[]
+    #interval: number
+    #num = 0
+    #count = 0
+
+    constructor(
+        container: HTMLElement,
+        src: string[],
+        options: { frames?: number[]; fps?: number; css?: NestedCSS; className?: string } = {}
+    ) {
+        super(container, options)
+
+        this.#frames = options.frames ?? src.map((s) => 24)
+
+        src.forEach((s, i) => {
+            const img = new Image()
+            img.src = s
+            img.onload = () => {
+                this.appendChild(img)
+            }
+
+            if (i != 0) {
+                img.classList.add("hide")
+            }
+        })
+
+        container.appendChild(this)
+
+        this.#interval = setInterval(() => {
+            this.#update()
+        }, options.fps ?? 24)
+    }
+
+    #update() {
+        if (this.#frames[this.#num] == this.#count++) {
+            this.#count = 0
+            this.children[this.#num].classList.toggle("hide")
+
+            this.#num++
+            this.#num %= this.#frames.length
+
+            this.children[this.#num].classList.toggle("hide")
+        }
+    }
+
+    remove(): void {
+        super.remove()
+        clearInterval(this.#interval)
+    }
+}
+
+customElements.define("i-anime", Ianime)

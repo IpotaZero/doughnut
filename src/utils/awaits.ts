@@ -9,19 +9,31 @@ const sleep = (ms: number): Promise<void> =>
 // クリック待ち
 const waitOK = () =>
     new Promise((resolve) => {
-        const onClick = new Iinput(document, "click", () => {
-            onKeydown.remove()
-            onClick.remove()
-            resolve(undefined)
-        })
-
-        const onKeydown = new Iinput(document, "keydown", (e) => {
-            if (["Enter", "KeyZ", "Space"].includes((e as KeyboardEvent).code)) {
+        const onClick = new Iinput(
+            document,
+            "click",
+            () => {
                 onKeydown.remove()
-                onClick.remove()
                 resolve(undefined)
+            },
+            {
+                once: true,
             }
-        })
+        )
+
+        const onKeydown = new Iinput(
+            document,
+            "keydown",
+            (e) => {
+                if (["Enter", "KeyZ", "Space"].includes((e as KeyboardEvent).code)) {
+                    onClick.remove()
+                    resolve(undefined)
+                }
+            },
+            {
+                once: true,
+            }
+        )
     })
 
 // msミリ秒かけてフェードアウトする
@@ -30,12 +42,8 @@ const fadeOut = (ms: number) =>
         container.style.transition = `opacity ${ms}ms`
         container.style.opacity = "0"
 
-        container.addEventListener(
-            "transitionend",
-            () => {
-                container.style.opacity = "1"
-                resolve(undefined)
-            },
-            { once: true }
-        )
+        setTimeout(() => {
+            container.style.opacity = "1"
+            resolve(undefined)
+        }, ms)
     })
