@@ -2,8 +2,13 @@ const SceneTitle = class {
     #se_click = new Audio("assets/sounds/クリック.mp3")
 
     constructor() {
+        this.#se_click.load()
+
         this.#clearContainer()
-        this.#setup()
+        this.#setupBackground()
+        this.#setupAnime()
+        this.#setupButton()
+        this.#setupLabel()
     }
 
     #clearContainer() {
@@ -11,14 +16,20 @@ const SceneTitle = class {
         ;[...document.head.children].filter((c) => c.tagName == "STYLE").forEach((c) => c.remove())
     }
 
-    #setup() {
-        const img = new Image()
-        img.src = "../assets/images/title.png"
-        img.style.height = "100%"
-        img.style.objectFit = "contain"
+    #setupBackground() {
+        new Iimage(container, "../assets/images/title.png", {
+            css: {
+                width: "100%",
+                height: "100%",
+                " img": {
+                    height: "100%",
+                    objectFit: "contain",
+                },
+            },
+        })
+    }
 
-        container.appendChild(img)
-
+    #setupAnime() {
         new Ianime(container, ["assets/images/batsu0.png", "assets/images/batsu1.png"], {
             css: {
                 top: "10%",
@@ -58,22 +69,9 @@ const SceneTitle = class {
             fps: 24,
             frames: [24, 24],
         })
+    }
 
-        const startButton = new Ielement(container, {
-            css: {
-                top: "20%",
-                left: "12%",
-                width: "12%",
-                height: "80%",
-
-                cursor: "pointer",
-
-                ":hover ~ .start-label": {
-                    display: "flex",
-                },
-            },
-        })
-
+    #setupLabel() {
         new Itext(container, "はじめから", {
             css: {
                 top: "20%",
@@ -91,21 +89,6 @@ const SceneTitle = class {
                 borderRadius: "1vh",
             },
             className: "start-label shake",
-        })
-
-        const continueButton = new Ielement(container, {
-            css: {
-                top: "30%",
-                left: "28%",
-                width: "25%",
-                height: "65%",
-
-                cursor: "pointer",
-
-                ":hover ~ .continue-label": {
-                    display: "flex",
-                },
-            },
         })
 
         new Itext(container, "つづきから", {
@@ -127,21 +110,6 @@ const SceneTitle = class {
             className: "continue-label shake",
         })
 
-        const deleteButton = new Ielement(container, {
-            css: {
-                top: "45%",
-                left: "58%",
-                width: "30%",
-                height: "40%",
-
-                cursor: "pointer",
-
-                ":hover ~ .delete-label": {
-                    display: "flex",
-                },
-            },
-        })
-
         new Itext(container, "でーたをけす", {
             css: {
                 top: "40%",
@@ -159,6 +127,53 @@ const SceneTitle = class {
                 borderRadius: "1vh",
             },
             className: "delete-label shake",
+        })
+    }
+
+    #setupButton() {
+        const startButton = new Ielement(container, {
+            css: {
+                top: "20%",
+                left: "12%",
+                width: "12%",
+                height: "80%",
+
+                cursor: "pointer",
+
+                ":hover ~ .start-label": {
+                    display: "flex",
+                },
+            },
+        })
+
+        const continueButton = new Ielement(container, {
+            css: {
+                top: "30%",
+                left: "28%",
+                width: "25%",
+                height: "65%",
+
+                cursor: "pointer",
+
+                ":hover ~ .continue-label": {
+                    display: "flex",
+                },
+            },
+        })
+
+        const deleteButton = new Ielement(container, {
+            css: {
+                top: "45%",
+                left: "58%",
+                width: "30%",
+                height: "40%",
+
+                cursor: "pointer",
+
+                ":hover ~ .delete-label": {
+                    display: "flex",
+                },
+            },
         })
 
         startButton.onclick = async () => {

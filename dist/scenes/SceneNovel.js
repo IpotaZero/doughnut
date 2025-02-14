@@ -14,6 +14,7 @@ class SceneNovel {
                 bottom: "8%",
             },
             voice: this.#voice[voiceNum],
+            speed: 16,
         });
         await waitOK();
         if (!itext.isEnd) {

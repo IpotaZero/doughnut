@@ -9,17 +9,37 @@ const SceneMain = class {
     #listeners: Iinput[] = []
     #itext: Itext
 
-    constructor(src: string, size: number, reverse: [number, number][]) {
-        this.#clearContainer()
+    #se_save = new Audio("assets/sounds/save.mp3")
+    #se_noSave = new Audio("assets/sounds/not-save.mp3")
+    #se_clear = new Audio("assets/sounds/clear.mp3")
+    #se_wrong = new Audio("assets/sounds/wrong.mp3")
 
+    constructor(src: string, size: number, reverse: [number, number][]) {
         this.#src = src
         this.#size = size
         this.#reverse = reverse
 
-        this.#setupElement()
+        this.#resetGame()
     }
 
-    #setupElement() {
+    #resetGame() {
+        // 画面をクリア
+        this.#clearContainer()
+
+        // 手数
+        this.#step = this.#reverse.length
+
+        // 盤面
+        this.#grid = Array.from({ length: this.#size }, () => [])
+
+        this.#listeners = []
+
+        this.#setupResetButton()
+        this.#setupGrid()
+        this.#setupStepText()
+    }
+
+    #setupResetButton() {
         const resetButton = new Itext(container, "りせっと", {
             css: {
                 width: "13%",
@@ -48,12 +68,11 @@ const SceneMain = class {
 
             await fadeOut(500)
 
-            this.#clearContainer()
-            this.#setupElement()
+            this.#resetGame()
         }
+    }
 
-        this.#step = this.#reverse.length
-
+    #setupGrid() {
         const grid = new Ielement(container, {
             css: {
                 height: "50%",
@@ -66,9 +85,8 @@ const SceneMain = class {
             },
         })
 
-        this.#grid = this.#grid = Array.from({ length: this.#size }, () => [])
-
         Iloop([0, 0], [this.#size - 1, this.#size - 1], (r, c) => {
+            //  背景
             new Ielement(grid, {
                 css: {
                     width: "100%",
@@ -81,6 +99,7 @@ const SceneMain = class {
                 },
             })
 
+            // セル
             const cell = new Ielement(grid, {
                 css: {
                     width: "100%",
@@ -112,6 +131,7 @@ const SceneMain = class {
                 },
             })
 
+            // セルをクリックしたとき
             this.#listeners.push(
                 new Iinput(cell, "click", () => {
                     this.#step--
@@ -123,17 +143,21 @@ const SceneMain = class {
             this.#grid[r][c] = cell
         })
 
-        this.#itext = new Itext(container, `残り: ${this.#step}`, {
-            css: {
-                top: "10%",
-            },
-        })
-
+        // パズルを作る
         this.#reverse.forEach(([r, c]) => {
             this.#onClick(r, c)
         })
     }
 
+    #setupStepText() {
+        this.#itext = new Itext(container, `残り: ${this.#step}`, {
+            css: {
+                top: "10%",
+            },
+        })
+    }
+
+    // ひっくり返す
     #onClick(r: number, c: number) {
         Iloop([r - 1, c - 1], [r + 1, c + 1], (R, C) => {
             const isInRange = 0 <= R && R <= this.#size - 1 && 0 <= C && C <= this.#size - 1
@@ -142,17 +166,21 @@ const SceneMain = class {
             this.#grid[R][C].classList.toggle("reversed")
         })
 
+        // 全て表の時
         if (this.#grid.flat().every((cell) => !cell.classList.contains("reversed"))) {
             this.#end()
             return
         }
 
+        // 負け
         if (this.#step == 0) {
-            this.#reset()
+            this.#lose()
         }
     }
 
-    async #reset() {
+    async #lose() {
+        this.#se_wrong.play()
+
         this.#listeners.forEach((l) => {
             l.remove()
         })
@@ -160,11 +188,12 @@ const SceneMain = class {
         await sleep(500)
         await fadeOut(500)
 
-        this.#clearContainer()
-        this.#setupElement()
+        this.#resetGame()
     }
 
     async #end() {
+        this.#se_clear.play()
+
         this.#listeners.forEach((l) => {
             l.remove()
         })
@@ -219,21 +248,25 @@ const SceneMain = class {
         )
 
         icommand.on("0", async () => {
+            this.#se_save.play()
             itext.innerHTML = "Saveしました"
-
-            await sleep(2000)
-            await fadeOut(1000)
-            currentScene = new SceneNovel()
 
             storyNum++
             localStorage.setItem("save", "" + storyNum)
+
+            await sleep(2000)
+            await fadeOut(1000)
+
+            currentScene = new SceneNovel()
         })
 
         icommand.on("1", async () => {
+            this.#se_noSave.play()
             itext.innerHTML = "Saveしませんでした"
 
             await sleep(2000)
             await fadeOut(1000)
+
             currentScene = new SceneNovel()
         })
     }
