@@ -1,5 +1,6 @@
 "use strict";
 const SceneTitle = class {
+    #se_click = new Audio("assets/sounds/クリック.mp3");
     constructor() {
         this.#clearContainer();
         this.#setup();
@@ -129,16 +130,21 @@ const SceneTitle = class {
             className: "delete-label shake",
         });
         startButton.onclick = async () => {
+            this.#se_click.play();
+            storyNum = 0;
+            storyIterator = stories[0]();
             await fadeOut(1000);
             currentScene = new SceneNovel();
         };
         continueButton.onclick = async () => {
+            this.#se_click.play();
             storyNum = +(localStorage.getItem("save") ?? 0);
             storyIterator = stories[storyNum]();
             await fadeOut(1000);
             currentScene = new SceneNovel();
         };
         deleteButton.onclick = () => {
+            this.#se_click.play();
             localStorage.clear();
             fadeOut(1000);
         };

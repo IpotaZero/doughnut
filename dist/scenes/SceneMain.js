@@ -172,6 +172,8 @@ const SceneMain = class {
             localStorage.setItem("save", "" + storyNum);
         });
         icommand.on("1", async () => {
+            itext.innerHTML = "Saveしませんでした";
+            await sleep(2000);
             await fadeOut(1000);
             currentScene = new SceneNovel();
         });
