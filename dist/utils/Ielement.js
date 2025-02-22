@@ -109,7 +109,7 @@ class Itext extends Ielement {
         const childNodes = Array.from(element.childNodes);
         childNodes.forEach((node) => {
             if (node.nodeType === Node.TEXT_NODE) {
-                const text = node.textContent?.trim();
+                const text = node.textContent;
                 if (text) {
                     // テキストノードをspanで置き換え
                     const span = document.createElement("span");
@@ -142,7 +142,7 @@ class Itext extends Ielement {
             span.textContent.length < span.getAttribute("data-original").length);
         if (spans.length === 0) {
             clearInterval(this.#interval);
-            this.innerHTML = this.#originalHTML;
+            // this.innerHTML = this.#originalHTML
             this.isEnd = true;
             resolve();
             return;

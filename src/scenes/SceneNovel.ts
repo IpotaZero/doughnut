@@ -3,7 +3,13 @@ class SceneNovel {
 
     constructor() {
         this.#clearContainer()
+        this.#setSoundVolume()
         this.#loop()
+    }
+
+    #setSoundVolume() {
+        this.#voice[0].volume = 0.5
+        this.#voice[1].volume = 0.5
     }
 
     async #loop() {
@@ -16,7 +22,7 @@ class SceneNovel {
                 bottom: "8%",
             },
             voice: this.#voice[voiceNum],
-            speed: 16,
+            speed: 24,
         })
 
         await waitOK()
@@ -155,11 +161,35 @@ const stories = [
     },
     async function* () {
         voiceNum = 1
-        yield "「僕は君を知っている」"
-        yield "「今日はちょっと体調が悪かっただけ」"
-        yield "「アドラーによると、明日も昨日も存在しないから、」"
-        yield "「また、今日を精一杯生きようと思うよ」"
-        yield "「Q.E.D. (証明終了)」"
+        yield "「数年後の未来が怖くて息ができない」"
+        yield "「動こうとしても足跡が僕の前で威嚇をする」"
+        yield "「小学二年生は今でも僕の首を絞め続けている」"
+        yield "「どうすればいいって言うんだ」"
+
+        voiceNum = 0
+        yield "「何もできない自分が嫌で、継ぎ接ぎの知識で強がっているんだね」"
+        yield "「アドラー曰く、昨日も明日も無いんじゃなかった？」"
+
+        voiceNum = 1
+        yield "「そうだね、だからと言ってそのまま受け入れられるほど勇気があるわけじゃないんだ」"
+
+        voiceNum = 0
+        yield "「......」"
+        yield "「じゃあそのまま後悔を抱えて死んでしまえ！」"
+
+        await sleep(2000)
+
+        voiceNum = 1
+        yield "「死にたくないから生きているんだ！」"
+        yield "「でもそんな生き方は良くない」"
+        yield "「分かってるんだ」"
+        yield "「最終的に決めるのは僕だから」"
+
+        voiceNum = 0
+        yield "「どうするの」"
+
+        voiceNum = 1
+        yield "「生きるために手を動かし続けるのさ」"
 
         await fadeOut(1000)
         currentScene = new SceneTitle()

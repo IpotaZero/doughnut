@@ -11,20 +11,46 @@ const SceneMain = class {
 
     #se_save = new Audio("assets/sounds/save.mp3")
     #se_noSave = new Audio("assets/sounds/not-save.mp3")
-    #se_clear = new Audio("assets/sounds/clear.mp3")
+    #se_clear = new Audio("assets/sounds/win.wav")
     #se_wrong = new Audio("assets/sounds/wrong.mp3")
 
+    #se_syariko = new Audio("../assets/sounds/syariko.wav")
+
+    #se_roll = new Audio("assets/sounds/鞭を振り回す2.mp3")
+
+    #bgm = new IBGM("assets/sounds/puzzle.wav")
+
     constructor(src: string, size: number, reverse: [number, number][]) {
+        this.#bgm.fetch()
+        this.#bgm.play()
+
         this.#src = src
         this.#size = size
         this.#reverse = reverse
 
+        this.#setSoundVolume()
         this.#resetGame()
+    }
+
+    #setSoundVolume() {
+        this.#se_clear.volume = 0.8
+        this.#se_save.volume = 0.3
+        this.#se_noSave.volume = 0.3
+        this.#se_wrong.volume = 0.3
     }
 
     #resetGame() {
         // 画面をクリア
         this.#clearContainer()
+
+        new Ielement(container, {
+            css: {
+                width: "100%",
+                height: "100%",
+                backgroundImage: "url(assets/images/background.png)",
+                backgroundSize: "10%",
+            },
+        })
 
         // 手数
         this.#step = this.#reverse.length
@@ -48,14 +74,19 @@ const SceneMain = class {
                 top: "10%",
                 left: "4%",
 
-                fontFamily: "tegaki",
+                fontFamily: "dot",
                 fontSize: "4vh",
 
-                borderRadius: "1vh",
-                border: "#111 solid 0.4vh",
+                // borderRadius: "1vh",
+                border: "#f4f4f4 solid 0.5vh",
+
+                // backgroundColor: "#f4f4f4",
+
+                color: "#f4f4f4",
 
                 ":hover": {
-                    backgroundColor: "#1114",
+                    // opacity: "0.5",
+                    backgroundColor: "#1118",
                     cursor: "pointer",
                 },
             },
@@ -95,7 +126,9 @@ const SceneMain = class {
                     gridColumn: `${c + 1}/${c + 2}`,
 
                     backgroundColor: "lightGray",
-                    border: "azure 1px solid",
+                    border: "#f4f4f4 0.5vh solid",
+
+                    boxSizing: "content-box",
                 },
             })
 
@@ -108,7 +141,7 @@ const SceneMain = class {
                     gridColumn: `${c + 1}/${c + 2}`,
 
                     backgroundColor: "#111",
-                    border: "azure 1px solid",
+                    border: "#f4f4f4 0.5vh solid",
 
                     backgroundImage: `url(${this.#src})`,
                     backgroundSize: `${100 * this.#size}% ${100 * this.#size}%`,
@@ -128,6 +161,10 @@ const SceneMain = class {
                         transition: "all 1s",
                         borderColor: "rgba(0,0,0,0)",
                     },
+
+                    ":hover": {
+                        cursor: "pointer",
+                    },
                 },
             })
 
@@ -135,8 +172,10 @@ const SceneMain = class {
             this.#listeners.push(
                 new Iinput(cell, "click", () => {
                     this.#step--
-                    this.#itext.innerText = `残り: ${this.#step}`
+                    this.#itext.innerText = `のこり: ${this.#step}`
                     this.#onClick(r, c)
+
+                    // this.#se_roll.play()
                 })
             )
 
@@ -150,9 +189,11 @@ const SceneMain = class {
     }
 
     #setupStepText() {
-        this.#itext = new Itext(container, `残り: ${this.#step}`, {
+        this.#itext = new Itext(container, `のこり: ${this.#step}`, {
             css: {
-                top: "10%",
+                top: "15%",
+                fontFamily: "dot",
+                color: "#f4f4f4",
             },
         })
     }
@@ -179,7 +220,7 @@ const SceneMain = class {
     }
 
     async #lose() {
-        this.#se_wrong.play()
+        // this.#se_wrong.play()
 
         this.#listeners.forEach((l) => {
             l.remove()
@@ -192,7 +233,7 @@ const SceneMain = class {
     }
 
     async #end() {
-        this.#se_clear.play()
+        this.#bgm.fadeout(5000)
 
         this.#listeners.forEach((l) => {
             l.remove()
@@ -205,18 +246,14 @@ const SceneMain = class {
         })
 
         await sleep(1000)
+        this.#se_clear.play()
+        await sleep(1000)
 
-        new Itext(container, "次へ", {
-            css: {
-                top: "80%",
-            },
-        })
-
-        await waitOK()
+        await fadeOut(1000)
 
         this.#clearContainer()
 
-        const itext = new Itext(container, "Saveしますか?", { css: { top: "50%" } })
+        let itext = new Itext(container, "Saveしますか?", { css: { fontFamily: "dot" } })
 
         const icommand = new Icommand(
             container,
@@ -230,6 +267,8 @@ const SceneMain = class {
                     height: "20%",
 
                     display: "block",
+
+                    fontFamily: "dot",
 
                     " .i-command-option": {
                         position: "relative",
@@ -248,8 +287,13 @@ const SceneMain = class {
         )
 
         icommand.on("0", async () => {
-            this.#se_save.play()
-            itext.innerHTML = "Saveしました"
+            itext.remove()
+
+            itext = new Itext(container, "Saveしました", {
+                css: {
+                    fontFamily: "dot",
+                },
+            })
 
             storyNum++
             localStorage.setItem("save", "" + storyNum)
@@ -261,8 +305,13 @@ const SceneMain = class {
         })
 
         icommand.on("1", async () => {
-            this.#se_noSave.play()
-            itext.innerHTML = "Saveしませんでした"
+            itext.remove()
+
+            itext = new Itext(container, "Saveしませんでした", {
+                css: {
+                    fontFamily: "dot",
+                },
+            })
 
             await sleep(2000)
             await fadeOut(1000)

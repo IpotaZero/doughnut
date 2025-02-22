@@ -5,7 +5,7 @@ if (!container)
 let interval = 0;
 let currentScene;
 document.addEventListener("DOMContentLoaded", () => {
-    currentScene = new SceneTitle();
+    currentScene = new ScenePreTitle();
 });
 document.addEventListener("contextmenu", (e) => {
     e.preventDefault();

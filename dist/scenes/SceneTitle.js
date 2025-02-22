@@ -1,13 +1,20 @@
 "use strict";
 const SceneTitle = class {
     #se_click = new Audio("assets/sounds/クリック.mp3");
+    #bgm = new IBGM("assets/sounds/title.wav");
     constructor() {
         this.#se_click.load();
+        this.#startBGM();
         this.#clearContainer();
         this.#setupBackground();
         this.#setupAnime();
         this.#setupButton();
         this.#setupLabel();
+    }
+    async #startBGM() {
+        await this.#bgm.fetch();
+        this.#bgm.reset();
+        this.#bgm.play();
     }
     #clearContainer() {
         ;
@@ -70,7 +77,8 @@ const SceneTitle = class {
                 fontFamily: "tegaki",
                 fontSize: "4vh",
                 backgroundColor: "white",
-                display: "none",
+                opacity: "0",
+                transition: "all 0.5s",
                 border: "#111 solid 0.4vh",
                 borderRadius: "1vh",
             },
@@ -85,13 +93,14 @@ const SceneTitle = class {
                 fontFamily: "tegaki",
                 fontSize: "4vh",
                 backgroundColor: "white",
-                display: "none",
+                opacity: "0",
+                transition: "all 0.5s",
                 border: "#111 solid 0.4vh",
                 borderRadius: "1vh",
             },
             className: "continue-label shake",
         });
-        new Itext(container, "でーたをけす", {
+        new Itext(container, "くれじっと", {
             css: {
                 top: "40%",
                 left: "65%",
@@ -100,7 +109,8 @@ const SceneTitle = class {
                 fontFamily: "tegaki",
                 fontSize: "4vh",
                 backgroundColor: "white",
-                display: "none",
+                opacity: "0",
+                transition: "all 0.5s",
                 border: "#111 solid 0.4vh",
                 borderRadius: "1vh",
             },
@@ -115,8 +125,9 @@ const SceneTitle = class {
                 width: "12%",
                 height: "80%",
                 cursor: "pointer",
+                zIndex: "2",
                 ":hover ~ .start-label": {
-                    display: "flex",
+                    opacity: "1",
                 },
             },
         });
@@ -127,8 +138,9 @@ const SceneTitle = class {
                 width: "25%",
                 height: "65%",
                 cursor: "pointer",
+                zIndex: "2",
                 ":hover ~ .continue-label": {
-                    display: "flex",
+                    opacity: "1",
                 },
             },
         });
@@ -139,8 +151,9 @@ const SceneTitle = class {
                 width: "30%",
                 height: "40%",
                 cursor: "pointer",
+                zIndex: "2",
                 ":hover ~ .delete-label": {
-                    display: "flex",
+                    opacity: "1",
                 },
             },
         });
@@ -148,6 +161,7 @@ const SceneTitle = class {
             this.#se_click.play();
             storyNum = 0;
             storyIterator = stories[0]();
+            this.#bgm.fadeout(1000);
             await fadeOut(1000);
             currentScene = new SceneNovel();
         };
@@ -155,13 +169,48 @@ const SceneTitle = class {
             this.#se_click.play();
             storyNum = +(localStorage.getItem("save") ?? 0);
             storyIterator = stories[storyNum]();
+            this.#bgm.fadeout(1000);
             await fadeOut(1000);
             currentScene = new SceneNovel();
         };
+        const credit = new Itext(container, `
+                Credit: <br>
+                Font: <a href="https://hicchicc.github.io/00ff/" target="_blank">x10y12pxDonguriDuel</a> <br> 
+                Font: <a href="http://blog.masuseki.com/?p=197" target="_blank">みちます</a> <br> 
+                SE: <a href="https://soundeffect-lab.info/" target="_blank">効果音ラボ</a> <br>
+                制作: MCR
+            `, {
+            css: {
+                width: "80%",
+                height: "80%",
+                backgroundColor: "#f4f4f4",
+                borderRadius: "6vh",
+                padding: "10%",
+                zIndex: "10",
+                display: "none",
+                ".display": {
+                    display: "inline",
+                },
+            },
+        });
+        const closeButton = new Itext(credit, "&times;", {
+            css: {
+                top: "3%",
+                left: "3%",
+                fontSize: "8vh",
+                ":hover": {
+                    opacity: "0.5",
+                    cursor: "pointer",
+                },
+            },
+        });
+        closeButton.onclick = () => {
+            this.#se_click.play();
+            credit.classList.remove("display");
+        };
         deleteButton.onclick = () => {
             this.#se_click.play();
-            localStorage.clear();
-            fadeOut(1000);
+            credit.classList.add("display");
         };
     }
 };

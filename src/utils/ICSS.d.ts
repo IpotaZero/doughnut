@@ -1,7 +1,7 @@
 type classSelector = `.${string}`
 type idSelector = `#${string}`
 type tagSelector = keyof HTMLElementTagNameMap
-type childSelector = ` ${tagSelector | classSelector | idSelector}`
+type childSelector = ` ${tagSelector | classSelector | idSelector}` | " "
 
 type pseudoClassSelector = ":hover" | ":active"
 

@@ -5,7 +5,7 @@ let interval = 0
 let currentScene: Scene
 
 document.addEventListener("DOMContentLoaded", () => {
-    currentScene = new SceneTitle()
+    currentScene = new ScenePreTitle()
 })
 
 type Scene = {}
