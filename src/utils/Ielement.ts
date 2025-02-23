@@ -62,6 +62,7 @@ class Ielement extends HTMLElement {
     }
 
     remove(): void {
+        ;[...this.children].forEach((c) => c.remove())
         super.remove()
         this.#styleElement.remove()
     }
@@ -349,25 +350,40 @@ class Ianime extends Ielement {
     ) {
         super(container, options)
 
-        this.#frames = options.frames ?? src.map((s) => 24)
+        this.#frames = options.frames ?? src.map((_) => 24)
 
-        src.forEach((s, i) => {
+        this.#setImages(src)
+
+        container.appendChild(this)
+
+        this.#start(options.fps ?? 24)
+    }
+
+    async #setImages(src: string[]) {
+        for (const [i, s] of src.entries()) {
             const img = new Image()
             img.src = s
-            img.onload = () => {
-                this.appendChild(img)
-            }
+
+            await new Promise((resolve) => {
+                img.onload = () => {
+                    resolve(undefined)
+                }
+            })
+
+            this.appendChild(img)
 
             if (i != 0) {
                 img.classList.add("hide")
             }
-        })
+        }
+    }
 
-        container.appendChild(this)
+    async #start(fps: number) {
+        await sleep(50)
 
         this.#interval = setInterval(() => {
             this.#update()
-        }, options.fps ?? 24)
+        }, fps)
     }
 
     #update() {

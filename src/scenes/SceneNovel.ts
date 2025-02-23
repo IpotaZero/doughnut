@@ -53,6 +53,18 @@ const stories = [
         // voiceNum = 1: 僕
         yield "シャリ子と僕の対話"
 
+        await fadeOut(1000)
+        new Ianime(container, ["assets/images/pill0.png", "assets/images/pill1.png", "assets/images/pill2.png"], {
+            css: {
+                width: "100%",
+                height: "100%",
+
+                " .hide": {
+                    display: "none",
+                },
+            },
+        })
+
         voiceNum = 1
         yield "「なぜ僕たちは生きることに苦しむか、知ってるかな?」"
         voiceNum = 0
@@ -74,6 +86,17 @@ const stories = [
         return ""
     },
     async function* (): AsyncGenerator<string, string, unknown> {
+        new Ianime(container, ["assets/images/tofu0.png", "assets/images/tofu1.png", "assets/images/tofu2.png"], {
+            css: {
+                width: "100%",
+                height: "100%",
+
+                " .hide": {
+                    display: "none",
+                },
+            },
+        })
+
         voiceNum = 1
         yield "「マグカップとドーナツは同相」"
         voiceNum = 0
@@ -96,6 +119,26 @@ const stories = [
         return ""
     },
     async function* () {
+        new Ianime(
+            container,
+            [
+                "assets/images/angel0.png",
+                "assets/images/angel1.png",
+                "assets/images/angel2.png",
+                "assets/images/angel1.png",
+            ],
+            {
+                css: {
+                    width: "100%",
+                    height: "100%",
+
+                    " .hide": {
+                        display: "none",
+                    },
+                },
+            }
+        )
+
         voiceNum = 1
         yield "「ところで君はアドラー心理学を知っているかな？」"
         voiceNum = 0
@@ -118,6 +161,17 @@ const stories = [
         return ""
     },
     async function* () {
+        new Ianime(container, ["assets/images/heart0.png", "assets/images/heart1.png", "assets/images/heart2.png"], {
+            css: {
+                width: "100%",
+                height: "100%",
+
+                " .hide": {
+                    display: "none",
+                },
+            },
+        })
+
         voiceNum = 1
         yield "「僕が言いたいのは、人間も宇宙の部分集合だってことさ」"
         voiceNum = 0
@@ -141,6 +195,17 @@ const stories = [
         return ""
     },
     async function* () {
+        new Ianime(container, ["assets/images/knife0.png", "assets/images/knife1.png", "assets/images/knife2.png"], {
+            css: {
+                width: "100%",
+                height: "100%",
+
+                " .hide": {
+                    display: "none",
+                },
+            },
+        })
+
         yield "「君が言いたいことは、そんなんじゃない」"
         yield "「声にならない痛みを、難しい言葉で誤魔化して、笑っているんでしょう」"
         yield "「泣き出したい衝動を、虚空に向かって投げつけているんでしょう」"
@@ -160,6 +225,17 @@ const stories = [
         return ""
     },
     async function* () {
+        new Ianime(container, ["assets/images/coffee0.png", "assets/images/coffee1.png", "assets/images/coffee2.png"], {
+            css: {
+                width: "100%",
+                height: "100%",
+
+                " .hide": {
+                    display: "none",
+                },
+            },
+        })
+
         voiceNum = 1
         yield "「数年後の未来が怖くて息ができない」"
         yield "「動こうとしても足跡が僕の前で威嚇をする」"
@@ -176,8 +252,6 @@ const stories = [
         voiceNum = 0
         yield "「......」"
         yield "「じゃあそのまま後悔を抱えて死んでしまえ！」"
-
-        await sleep(2000)
 
         voiceNum = 1
         yield "「死にたくないから生きているんだ！」"

@@ -47,6 +47,8 @@ class Ielement extends HTMLElement {
         return style + "\n";
     }
     remove() {
+        ;
+        [...this.children].forEach((c) => c.remove());
         super.remove();
         this.#styleElement.remove();
     }
@@ -257,21 +259,31 @@ class Ianime extends Ielement {
     #count = 0;
     constructor(container, src, options = {}) {
         super(container, options);
-        this.#frames = options.frames ?? src.map((s) => 24);
-        src.forEach((s, i) => {
+        this.#frames = options.frames ?? src.map((_) => 24);
+        this.#setImages(src);
+        container.appendChild(this);
+        this.#start(options.fps ?? 24);
+    }
+    async #setImages(src) {
+        for (const [i, s] of src.entries()) {
             const img = new Image();
             img.src = s;
-            img.onload = () => {
-                this.appendChild(img);
-            };
+            await new Promise((resolve) => {
+                img.onload = () => {
+                    resolve(undefined);
+                };
+            });
+            this.appendChild(img);
             if (i != 0) {
                 img.classList.add("hide");
             }
-        });
-        container.appendChild(this);
+        }
+    }
+    async #start(fps) {
+        await sleep(50);
         this.#interval = setInterval(() => {
             this.#update();
-        }, options.fps ?? 24);
+        }, fps);
     }
     #update() {
         if (this.#frames[this.#num] == this.#count++) {
