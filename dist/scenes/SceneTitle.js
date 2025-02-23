@@ -34,7 +34,7 @@ const SceneTitle = class {
         });
     }
     #setupAnime() {
-        new Ianime(container, ["assets/images/batsu0.png", "assets/images/batsu1.png"], {
+        new Iimage(container, "assets/images/test.gif", {
             css: {
                 top: "10%",
                 left: "3%",
@@ -47,10 +47,8 @@ const SceneTitle = class {
                     display: "none",
                 },
             },
-            fps: 24,
-            frames: [24, 24],
         });
-        new Ianime(container, ["assets/images/batsu0.png", "assets/images/batsu1.png"], {
+        new Iimage(container, "assets/images/test.gif", {
             css: {
                 bottom: "10%",
                 right: "3%",
@@ -63,8 +61,6 @@ const SceneTitle = class {
                     display: "none",
                 },
             },
-            fps: 24,
-            frames: [24, 24],
         });
     }
     #setupLabel() {

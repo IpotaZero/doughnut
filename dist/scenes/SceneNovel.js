@@ -43,7 +43,7 @@ const stories = [
         // voiceNum = 1: 僕
         yield "シャリ子と僕の対話";
         await fadeOut(1000);
-        new Ianime(container, ["assets/images/pill0.png", "assets/images/pill1.png", "assets/images/pill2.png"], {
+        new Iimage(container, "assets/images/pill.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -72,7 +72,7 @@ const stories = [
         return "";
     },
     async function* () {
-        new Ianime(container, ["assets/images/tofu0.png", "assets/images/tofu1.png", "assets/images/tofu2.png"], {
+        new Iimage(container, "assets/images/tofu.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -102,12 +102,7 @@ const stories = [
         return "";
     },
     async function* () {
-        new Ianime(container, [
-            "assets/images/angel0.png",
-            "assets/images/angel1.png",
-            "assets/images/angel2.png",
-            "assets/images/angel1.png",
-        ], {
+        new Iimage(container, "assets/images/angel.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -137,7 +132,7 @@ const stories = [
         return "";
     },
     async function* () {
-        new Ianime(container, ["assets/images/heart0.png", "assets/images/heart1.png", "assets/images/heart2.png"], {
+        new Iimage(container, "assets/images/heart.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -168,7 +163,7 @@ const stories = [
         return "";
     },
     async function* () {
-        new Ianime(container, ["assets/images/knife0.png", "assets/images/knife1.png", "assets/images/knife2.png"], {
+        new Iimage(container, "assets/images/knife.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -195,7 +190,7 @@ const stories = [
         return "";
     },
     async function* () {
-        new Ianime(container, ["assets/images/coffee0.png", "assets/images/coffee1.png", "assets/images/coffee2.png"], {
+        new Iimage(container, "assets/images/coffee.gif", {
             css: {
                 width: "100%",
                 height: "100%",
