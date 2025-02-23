@@ -322,14 +322,19 @@ class Icommand extends Ielement {
 customElements.define("i-command", Icommand)
 
 class Iimage extends Ielement {
+    ready: Promise<void>
+
     constructor(container: HTMLElement, src: string, options: { css?: NestedCSS; className?: string } = {}) {
         super(container, options)
 
-        const img = new Image()
-        img.src = src
-        img.onload = () => {
-            this.appendChild(img)
-        }
+        this.ready = new Promise((resolve) => {
+            const img = new Image()
+            img.src = src
+            img.onload = () => {
+                this.appendChild(img)
+                resolve()
+            }
+        })
 
         container.appendChild(this)
     }

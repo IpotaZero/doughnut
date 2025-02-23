@@ -241,13 +241,17 @@ class Icommand extends Ielement {
 }
 customElements.define("i-command", Icommand);
 class Iimage extends Ielement {
+    ready;
     constructor(container, src, options = {}) {
         super(container, options);
-        const img = new Image();
-        img.src = src;
-        img.onload = () => {
-            this.appendChild(img);
-        };
+        this.ready = new Promise((resolve) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = () => {
+                this.appendChild(img);
+                resolve();
+            };
+        });
         container.appendChild(this);
     }
 }

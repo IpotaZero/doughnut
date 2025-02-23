@@ -23,7 +23,7 @@ class ScenePreTitle {
     }
     async #wait() {
         await waitOK();
-        await fadeOut(1000);
+        await fade(1000);
         currentScene = new SceneTitle();
     }
 }

@@ -15,6 +15,14 @@ const SceneMain = class {
         this.#src = src;
         this.#size = size;
         this.#reverse = reverse;
+        this.#initialize();
+    }
+    async #initialize() {
+        await Promise.all([
+            new Iimage(container, this.#src).ready,
+            new Iimage(container, "assets/images/background.png").ready,
+        ]);
+        fadeIn(1000);
         this.#setSoundVolume();
         this.#resetGame();
     }
@@ -65,7 +73,7 @@ const SceneMain = class {
             this.#listeners.forEach((l) => {
                 l.remove();
             });
-            await fadeOut(500);
+            await fade(500);
             this.#resetGame();
         };
     }
@@ -168,7 +176,7 @@ const SceneMain = class {
             l.remove();
         });
         await sleep(500);
-        await fadeOut(500);
+        await fade(500);
         this.#resetGame();
     }
     async #end() {
@@ -183,7 +191,7 @@ const SceneMain = class {
         await sleep(1000);
         this.#se_clear.play();
         await sleep(1000);
-        await fadeOut(1000);
+        await fade(1000);
         this.#clearContainer();
         let itext = new Itext(container, "Saveしますか?", { css: { fontFamily: "dot" } });
         const icommand = new Icommand(container, new Idict({
@@ -217,7 +225,7 @@ const SceneMain = class {
             storyNum++;
             localStorage.setItem("save", "" + storyNum);
             await sleep(2000);
-            await fadeOut(1000);
+            await fade(1000);
             currentScene = new SceneNovel();
         });
         icommand.on("1", async () => {

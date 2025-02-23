@@ -37,13 +37,33 @@ const waitOK = () =>
     })
 
 // msミリ秒かけてフェードアウトする
-const fadeOut = (ms: number) =>
+const fade = (ms: number) =>
     new Promise((resolve) => {
         container.style.transition = `opacity ${ms}ms`
         container.style.opacity = "0"
 
         setTimeout(() => {
             container.style.opacity = "1"
+            resolve(undefined)
+        }, ms)
+    })
+
+const fadeOut = (ms: number) =>
+    new Promise((resolve) => {
+        container.style.transition = `opacity ${ms}ms`
+        container.style.opacity = "0"
+
+        setTimeout(() => {
+            resolve(undefined)
+        }, ms)
+    })
+
+const fadeIn = (ms: number) =>
+    new Promise((resolve) => {
+        container.style.transition = `opacity ${ms}ms`
+        container.style.opacity = "1"
+
+        setTimeout(() => {
             resolve(undefined)
         }, ms)
     })

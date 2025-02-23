@@ -23,11 +23,25 @@ const waitOK = () => new Promise((resolve) => {
     });
 });
 // msミリ秒かけてフェードアウトする
-const fadeOut = (ms) => new Promise((resolve) => {
+const fade = (ms) => new Promise((resolve) => {
     container.style.transition = `opacity ${ms}ms`;
     container.style.opacity = "0";
     setTimeout(() => {
         container.style.opacity = "1";
+        resolve(undefined);
+    }, ms);
+});
+const fadeOut = (ms) => new Promise((resolve) => {
+    container.style.transition = `opacity ${ms}ms`;
+    container.style.opacity = "0";
+    setTimeout(() => {
+        resolve(undefined);
+    }, ms);
+});
+const fadeIn = (ms) => new Promise((resolve) => {
+    container.style.transition = `opacity ${ms}ms`;
+    container.style.opacity = "1";
+    setTimeout(() => {
         resolve(undefined);
     }, ms);
 });

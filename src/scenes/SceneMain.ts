@@ -20,6 +20,17 @@ const SceneMain = class {
         this.#size = size
         this.#reverse = reverse
 
+        this.#initialize()
+    }
+
+    async #initialize() {
+        await Promise.all([
+            new Iimage(container, this.#src).ready,
+            new Iimage(container, "assets/images/background.png").ready,
+        ])
+
+        fadeIn(1000)
+
         this.#setSoundVolume()
         this.#resetGame()
     }
@@ -86,7 +97,7 @@ const SceneMain = class {
                 l.remove()
             })
 
-            await fadeOut(500)
+            await fade(500)
 
             this.#resetGame()
         }
@@ -216,7 +227,7 @@ const SceneMain = class {
         })
 
         await sleep(500)
-        await fadeOut(500)
+        await fade(500)
 
         this.#resetGame()
     }
@@ -238,7 +249,7 @@ const SceneMain = class {
         this.#se_clear.play()
         await sleep(1000)
 
-        await fadeOut(1000)
+        await fade(1000)
 
         this.#clearContainer()
 
@@ -288,7 +299,7 @@ const SceneMain = class {
             localStorage.setItem("save", "" + storyNum)
 
             await sleep(2000)
-            await fadeOut(1000)
+            await fade(1000)
 
             currentScene = new SceneNovel()
         })

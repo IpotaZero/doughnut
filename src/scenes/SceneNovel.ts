@@ -49,12 +49,13 @@ let voiceNum = 1
 
 const stories = [
     async function* (): AsyncGenerator<string, string, unknown> {
+        fadeIn(1000)
         // voiceNum = 0: シャリ子
         // voiceNum = 1: 僕
         yield "シャリ子と僕の対話"
 
         await fadeOut(1000)
-        new Iimage(container, "assets/images/pill.gif", {
+        await new Iimage(container, "assets/images/pill.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -63,7 +64,8 @@ const stories = [
                     display: "none",
                 },
             },
-        })
+        }).ready
+        fadeIn(1000)
 
         voiceNum = 1
         yield "「なぜ僕たちは生きることに苦しむか、知ってるかな?」"
@@ -86,7 +88,7 @@ const stories = [
         return ""
     },
     async function* (): AsyncGenerator<string, string, unknown> {
-        new Iimage(container, "assets/images/tofu.gif", {
+        await new Iimage(container, "assets/images/tofu.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -95,7 +97,8 @@ const stories = [
                     display: "none",
                 },
             },
-        })
+        }).ready
+        fadeIn(1000)
 
         voiceNum = 1
         yield "「マグカップとドーナツは同相」"
@@ -119,7 +122,7 @@ const stories = [
         return ""
     },
     async function* () {
-        new Iimage(container, "assets/images/angel.gif", {
+        await new Iimage(container, "assets/images/angel.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -128,7 +131,8 @@ const stories = [
                     display: "none",
                 },
             },
-        })
+        }).ready
+        fadeIn(1000)
 
         voiceNum = 1
         yield "「ところで君はアドラー心理学を知っているかな？」"
@@ -152,7 +156,7 @@ const stories = [
         return ""
     },
     async function* () {
-        new Iimage(container, "assets/images/heart.gif", {
+        await new Iimage(container, "assets/images/heart.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -161,7 +165,8 @@ const stories = [
                     display: "none",
                 },
             },
-        })
+        }).ready
+        fadeIn(1000)
 
         voiceNum = 1
         yield "「僕が言いたいのは、人間も宇宙の部分集合だってことさ」"
@@ -186,7 +191,7 @@ const stories = [
         return ""
     },
     async function* () {
-        new Iimage(container, "assets/images/knife.gif", {
+        await new Iimage(container, "assets/images/knife.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -195,7 +200,8 @@ const stories = [
                     display: "none",
                 },
             },
-        })
+        }).ready
+        fadeIn(1000)
 
         yield "「君が言いたいことは、そんなんじゃない」"
         yield "「声にならない痛みを、難しい言葉で誤魔化して、笑っているんでしょう」"
@@ -216,7 +222,7 @@ const stories = [
         return ""
     },
     async function* () {
-        new Iimage(container, "assets/images/coffee.gif", {
+        await new Iimage(container, "assets/images/coffee.gif", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -225,7 +231,8 @@ const stories = [
                     display: "none",
                 },
             },
-        })
+        }).ready
+        fadeIn(1000)
 
         voiceNum = 1
         yield "「数年後の未来が怖くて息ができない」"
@@ -256,7 +263,7 @@ const stories = [
         voiceNum = 1
         yield "「生きるために手を動かし続けるのさ」"
 
-        await fadeOut(1000)
+        await fade(1000)
         currentScene = new SceneTitle()
         return ""
     },

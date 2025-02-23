@@ -221,7 +221,7 @@ const SceneTitle = class {
                 Font: <a href="https://hicchicc.github.io/00ff/" target="_blank">x10y12pxDonguriDuel</a> <br> 
                 Font: <a href="http://blog.masuseki.com/?p=197" target="_blank">みちます</a> <br> 
                 SE: <a href="https://soundeffect-lab.info/" target="_blank">効果音ラボ</a> <br>
-                制作: MCR
+                制作: <a href="https://x.com/ocu_mcr" target="_blank">MCR</a> <br>
             `,
             {
                 css: {
