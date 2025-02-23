@@ -22,7 +22,7 @@ const SceneTitle = class {
         [...document.head.children].filter((c) => c.tagName == "STYLE").forEach((c) => c.remove());
     }
     #setupBackground() {
-        new Iimage(container, "../assets/images/title.png", {
+        new Iimage(container, "assets/images/title.png", {
             css: {
                 width: "100%",
                 height: "100%",

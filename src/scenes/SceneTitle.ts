@@ -26,7 +26,7 @@ const SceneTitle = class {
     }
 
     #setupBackground() {
-        new Iimage(container, "../assets/images/title.png", {
+        new Iimage(container, "assets/images/title.png", {
             css: {
                 width: "100%",
                 height: "100%",

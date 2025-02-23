@@ -1,5 +1,5 @@
 class SceneNovel {
-    #voice = [new Audio("../assets/sounds/syariko.wav"), new Audio("../assets/sounds/me.wav")]
+    #voice = [new Audio("assets/sounds/syariko.wav"), new Audio("assets/sounds/me.wav")]
 
     constructor() {
         this.#clearContainer()

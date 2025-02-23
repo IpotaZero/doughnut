@@ -9,14 +9,6 @@ const SceneMain = class {
     #listeners: Iinput[] = []
     #itext: Itext
 
-    // #se_save = new Audio("assets/sounds/save.mp3")
-    // #se_noSave = new Audio("assets/sounds/not-save.mp3")
-    // #se_wrong = new Audio("assets/sounds/wrong.mp3")
-
-    // #se_syariko = new Audio("../assets/sounds/syariko.wav")
-
-    // #se_roll = new Audio("assets/sounds/鞭を振り回す2.mp3")
-
     #se_clear = new Audio("assets/sounds/win.wav")
     #bgm = new IBGM("assets/sounds/puzzle.wav")
 
@@ -34,9 +26,6 @@ const SceneMain = class {
 
     #setSoundVolume() {
         this.#se_clear.volume = 0.5
-        // this.#se_save.volume = 0.3
-        // this.#se_noSave.volume = 0.3
-        // this.#se_wrong.volume = 0.3
     }
 
     #resetGame() {
