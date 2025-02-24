@@ -55,7 +55,7 @@ const stories = [
         yield "シャリ子と僕の対話"
 
         await fadeOut(1000)
-        await new Iimage(container, "assets/images/pill.gif", {
+        await new Iimage(container, "assets/images/pill.apng", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -88,7 +88,7 @@ const stories = [
         return ""
     },
     async function* (): AsyncGenerator<string, string, unknown> {
-        await new Iimage(container, "assets/images/tofu.gif", {
+        await new Iimage(container, "assets/images/tofu.apng", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -122,7 +122,7 @@ const stories = [
         return ""
     },
     async function* () {
-        await new Iimage(container, "assets/images/angel.gif", {
+        await new Iimage(container, "assets/images/angel.apng", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -156,7 +156,7 @@ const stories = [
         return ""
     },
     async function* () {
-        await new Iimage(container, "assets/images/heart.gif", {
+        await new Iimage(container, "assets/images/heart.apng", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -191,7 +191,7 @@ const stories = [
         return ""
     },
     async function* () {
-        await new Iimage(container, "assets/images/knife.gif", {
+        await new Iimage(container, "assets/images/knife.apng", {
             css: {
                 width: "100%",
                 height: "100%",
@@ -222,7 +222,7 @@ const stories = [
         return ""
     },
     async function* () {
-        await new Iimage(container, "assets/images/coffee.gif", {
+        await new Iimage(container, "assets/images/coffee.apng", {
             css: {
                 width: "100%",
                 height: "100%",

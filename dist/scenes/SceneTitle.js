@@ -34,7 +34,7 @@ const SceneTitle = class {
         });
     }
     #setupAnime() {
-        new Iimage(container, "assets/images/test.gif", {
+        new Iimage(container, "assets/images/batsu.apng", {
             css: {
                 top: "10%",
                 left: "3%",
@@ -48,7 +48,7 @@ const SceneTitle = class {
                 },
             },
         });
-        new Iimage(container, "assets/images/test.gif", {
+        new Iimage(container, "assets/images/batsu.apng", {
             css: {
                 bottom: "10%",
                 right: "3%",
